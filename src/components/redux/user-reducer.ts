@@ -1,75 +1,58 @@
-const follow = 'FOLLOW'
-const unfollow = 'UNFOLLOW'
-const setusers = 'SET-USERS'
+const FOLLOW = 'FOLLOW'
+const UNFOLLOW = 'UNFOLLOW'
+const SET_USERS = 'SET-USERS'
+const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
+const SET_USERS_TOTAL_COUNT = 'SET-USERS-TOTAL-COUNT'
+const TOGGLE_ISFETCHING = 'TOGGLE-ISFETCHING'
+type toggleIsFetchingAT = {
+    type: typeof TOGGLE_ISFETCHING
+    isFetching: boolean
+}
+type setCurrentPageAT = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: number
+}
+type setUsersTotalCountAT = {
+    type: typeof SET_USERS_TOTAL_COUNT
+    count: number
+}
 type followAT = {
-    type: typeof follow
+    type: typeof FOLLOW
     userID: string
 }
 type unfollowAT = {
-    type: typeof unfollow
+    type: typeof UNFOLLOW
     userID: string
 }
 type setUsersAT = {
-    type: typeof setusers
-    users: []
+    type: typeof SET_USERS
+    users: UserType[]
 }
-type UsersReducerAT = unfollowAT | followAT | setUsersAT
+type UsersReducerAT = unfollowAT | followAT | setUsersAT | setCurrentPageAT | setUsersTotalCountAT | toggleIsFetchingAT
 type InitialState = typeof initialState;
- export type UserType = {
-     fullName: string
-     id: string
-     followed: boolean
-     status: string
-     location: {
-         city: string
-         country: string}
-     avatarPhoto: string
- }
+export type UserType = {
+    fullName: string
+    id: string
+    followed: boolean
+    status: string
+    location?: {
+        city: string
+        country: string
+    }
+    avatarPhoto: string
+}
 let initialState = {
-    users: [
-        {   avatarPhoto:'https://i.ytimg.com/vi/fW2GeLXiLVM/hqdefault_live.jpg',
-            fullName: 'Batya',
-            id: "1",
-            followed: true,
-            status: 'I\'m a batya',
-            location: {city: 'Misk', country: "Belarus"}
-        },
-        {avatarPhoto:'https://i.ytimg.com/vi/fW2GeLXiLVM/hqdefault_live.jpg',
-            fullName: 'Ahmed',
-            id: "2",
-            followed: false,
-            status: 'I\'m a moscow-city boss',
-            location: {city: 'Moscow', country: "Russia"}
-        },
-        {avatarPhoto:'https://i.ytimg.com/vi/fW2GeLXiLVM/hqdefault_live.jpg',
-            fullName: 'Leonardo',
-            id: "3",
-            followed: true,
-            status: 'I\'m a hot boss',
-            location: {city: 'Valencia', country: "Spain"}
-        },
-        {avatarPhoto:'https://i.ytimg.com/vi/fW2GeLXiLVM/hqdefault_live.jpg',
-            fullName: 'Vasya',
-            id: "4",
-            followed: true,
-            status: 'I\'m a  russian boss',
-            location: {city: 'Novgorod', country: "Russia"}
-        },
-        {avatarPhoto:'https://i.ytimg.com/vi/fW2GeLXiLVM/hqdefault_live.jpg',
-            fullName: 'Desire',
-            id: "5",
-            followed: false,
-            status: 'I\'m a paradise boss',
-            location: {city: 'Bora-Bora', country: "Paradise"}
-        },
-
-    ]
+    users: [ ],
+    pageSize: 5,
+    totalUsersCount: 0,
+    currentPage: 1,
+    isFetching: false
 }
 
 
 const userReduser = (state: InitialState = initialState, action: UsersReducerAT): InitialState => {
     switch (action.type) {
-        case follow: {
+        case FOLLOW: {
 
             return {
                 ...state,
@@ -82,7 +65,7 @@ const userReduser = (state: InitialState = initialState, action: UsersReducerAT)
             }
 
         }
-        case unfollow: {
+        case UNFOLLOW: {
             return {
                 ...state,
                 users: state.users.map(u => {
@@ -94,32 +77,69 @@ const userReduser = (state: InitialState = initialState, action: UsersReducerAT)
             }
         }
 
-        case setusers: {
+        case SET_USERS: {
             return {
                 ...state,
-                users : [...state.users, ...action.users]
+                users: action.users
             }
         }
+        case SET_CURRENT_PAGE: {
+            return{
+                ...state,
+                currentPage: action.currentPage
+            }
+        }
+        case TOGGLE_ISFETCHING:{
+            return {
+                ...state,
+                isFetching: action.isFetching
+            }
+        }
+        case SET_USERS_TOTAL_COUNT:{
+            return {
+                ...state,
+                totalUsersCount: action.count
+            }
+        }
+
         default:
             return state;
     }
 }
-export const followAC = (userID: string): followAT => {
+export const follow = (userID: string): followAT => {
     return {
-        type: follow,
+        type: FOLLOW,
         userID: userID
     }
 }
-export const unfollowAC = (userID: string): unfollowAT => {
+export const unfollow = (userID: string): unfollowAT => {
     return {
-        type: unfollow,
+        type: UNFOLLOW,
         userID: userID
     }
 }
-export const setUsersAC = (users: []): setUsersAT => {
+export const setUsers = (users: Array<UserType>): setUsersAT => {
     return {
-        type: setusers,
+        type: SET_USERS,
         users: users
+    }
+}
+export const setCurrentPage = (page:number):setCurrentPageAT =>{
+    return{
+        type: SET_CURRENT_PAGE,
+        currentPage: page
+    }
+}
+export const setUsersTotalCount = (count:number):setUsersTotalCountAT =>{
+    return{
+        type: SET_USERS_TOTAL_COUNT,
+        count: count
+    }
+}
+export const toggleIsFetching = (isFetching:boolean):toggleIsFetchingAT =>{
+    return{
+        type: TOGGLE_ISFETCHING,
+        isFetching: isFetching
     }
 }
 

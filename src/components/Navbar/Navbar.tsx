@@ -1,6 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import classes from './Navbar.module.css'
+
 const Navbar = () => {
     // @ts-ignore
     return (
@@ -14,6 +15,9 @@ const Navbar = () => {
             <div className={classes.item}>
                 <NavLink to='/news' activeClassName={classes.active}>News</NavLink>
             </div>
+            <div className={classes.item}>
+                <NavLink to='/users' activeClassName={classes.active}>Users</NavLink>
+            </div>
 
             <div className={classes.item}>
                 <NavLink to='/music' activeClassName={classes.active}>Music</NavLink>
@@ -21,7 +25,7 @@ const Navbar = () => {
             <div className={classes.item}>
                 <NavLink to='/settings' activeClassName={classes.active}>Settings</NavLink>
             </div>
-        </nav> )
+        </nav>)
 
 }
 export default Navbar;
