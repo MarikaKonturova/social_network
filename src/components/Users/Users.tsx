@@ -1,16 +1,18 @@
 import React from 'react';
 import userPhoto from "../../asets/images/ava.png";
 import {UserType} from "../redux/user-reducer";
-import {Preloader} from "../Common/Preloader/Preloader";
+import {NavLink} from 'react-router-dom';
+import {usersAPI} from "../../api/Api";
 
 type UsersFunc = {
     users: Array<UserType>
     totalUsersCount: number
     pageSize: number
     currentPage: number
-    unfollow: (userID: string) => void
-    follow: (userID: string) => void
-    onPageChanged:(p: number)=> void
+    unfollow: (userID: number) => void
+    follow: (userID: number) => void
+    onPageChanged: (p: number) => void
+    followingInProgress: number[]
 }
 
 export const Users = (props: UsersFunc) => {
@@ -21,7 +23,7 @@ export const Users = (props: UsersFunc) => {
     }
 
     return <div>
-         <div>
+        <div>
             {pages.map(p => <span
                 onClick={(e) => {
                     props.onPageChanged(p)
@@ -31,28 +33,26 @@ export const Users = (props: UsersFunc) => {
         {
             props.users.map(u => <div key={u.id}>
                 <span><div>
-                <img src={u.photos.small ? u.photos.small : userPhoto} className={"userPhoto"}/>
+                <NavLink to={"/profile/" + u.id}>
+                    <img src={u.photos.small ? u.photos.small : userPhoto} style={{maxWidth: '100px'}} className={"userPhoto"}/></NavLink>
                 <div>
                     {u.followed ?
-                        <button onClick={() => {
+                        <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
                             props.unfollow(u.id)
                         }}>Unfollow</button>
                         :
-                        <button onClick={() => {
+                        <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
                             props.follow(u.id)
+
                         }}>Follow</button>}
                     </div>
             </div></span>
                 <span>
-                <span><div>{u.fullName}</div><div>{u.status}</div></span>
-
-                    {/*  <span><div>{u.location.city}</div><div>{u.location.country}</div></span>
-           */}
+                <div>{u.name}</div><div>{u.status}</div>
             </span>
             </div>)
         }
     </div>
 
 
-}
 }

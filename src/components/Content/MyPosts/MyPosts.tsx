@@ -2,48 +2,64 @@ import React from 'react';
 import { PostType } from '../../redux/profile-reducer';
 import classes from './MyPosts.module.css';
 import Post from "./Post/Post";
+import {Field, Form} from "react-final-form";
+import {composeValidators, maxLengthCreator, requiredField} from "../../../utils/validators/Validator";
+import {Textarea} from "../../Common/FormsControls/FormControls";
 
 
-type MyPostsPropsType = {
-    postsData: Array<PostType>,
-    newPostText: string
-    addPost:()=> void
-    updateNewPostText:(text:string)=> void
-}
 
 
 const MyPosts = (props: MyPostsPropsType) => {
 
-    let newPostElement = React.createRef<HTMLTextAreaElement>();
-    let addPost = () => {
-        if (newPostElement.current) {
-            props.addPost();
-        }
+    let addPost = ({newPostText, ...restProps}: AddNewPostType) => {
+            props.addPost(newPostText);
     }
 
     let postsElements = props.postsData.map(el => <Post message={el.message} likes={el.likes}/>);
-    let onPostChange = () => {
-        if (newPostElement.current) {
-            let text = newPostElement.current.value;
-            props.updateNewPostText(text);
-        }
-    };
     return (
         <div className={classes.postBlock}>
             <h3>My posts</h3>
             <div>
-                <div>
-                    <textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>
-                </div>
-                <div>
-                    <button onClick={addPost}>Add post</button>
-                </div>
+                <NewPostForm addPost={addPost} required={requiredField}/>
                 <div className={classes.posts}>
                     {postsElements}
                 </div>
-
             </div>
         </div>
     )
 }
+
+
+const maxLength10 =  maxLengthCreator(10)
+const NewPostForm = ({addPost,required, ...restProps}: NewPostFormType) => {
+    return (
+        <Form onSubmit={addPost}
+              render={({handleSubmit}) => (
+                  <form onSubmit={handleSubmit}>
+                      <div>
+                          <Field name="newPostText"
+                                 component={Textarea}
+                                 placeholder="Enter your post"
+                                 validate={composeValidators(required,maxLength10)}
+                          />
+                      </div>
+                      <button type="submit">Submit</button>
+                  </form>
+              )}
+        />
+    )
+}
+type NewPostFormType={
+    addPost:(values: AddNewPostType)=> void
+    required:(value: any)=> void
+}
+type AddNewPostType = {
+    newPostText: string
+}
+
+type MyPostsPropsType = {
+    postsData: Array<PostType>,
+    addPost:(newPost: string)=> void
+}
+
 export default MyPosts;

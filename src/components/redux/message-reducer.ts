@@ -1,29 +1,18 @@
-import React from "react";
-
-type updatenewmessagebodyActionType = {
-    type: typeof updatenewmessagebody
-    body: string
-}
 type sendmessageActionType = {
-    type: typeof sendmessage
+    type: typeof sendmessage,
+    newMessageBody: string
 }
-type MessageActionTypes = sendmessageActionType | updatenewmessagebodyActionType
-export const updatenewmessagebodyActionCreator = (body: string): updatenewmessagebodyActionType => {
+type MessageActionTypes = sendmessageActionType
+export const sendmessageActionCreator = (newMessageBody: string): sendmessageActionType => {
     return {
-        type: updatenewmessagebody,
-        body: body
-    }
-}
-export const sendmessageActionCreator = (): sendmessageActionType => {
-    return {
-        type: sendmessage
+        type: sendmessage,
+        newMessageBody
     }
 }
 
 
-const updatenewmessagebody = 'UPDATE-NEW-MESSAGE-BODY';
 const sendmessage = "SEND-MESSAGE";
-type InitialState = typeof initialState;
+type InitialStateType = typeof initialState;
 let initialState = {
     dialogs: [
         {id: 1, name: 'Dimych'},
@@ -36,32 +25,21 @@ let initialState = {
         {id: 2, message: 'How is your it-kamasutra'},
         {id: 3, message: 'Yo'},
         {id: 4, message: 'Yo'},
-        {id: 5, message: 'Yo'}],
-    newMessageBody: ""
+        {id: 5, message: 'Yo'}]
 }
 
-export const messageReduser = (state: InitialState = initialState, action: MessageActionTypes): InitialState => {
+export const messageReduser = (state: InitialStateType = initialState, action: MessageActionTypes): InitialStateType => {
     switch (action.type) {
-        case updatenewmessagebody: {
-            return {
-                ...state,
-                newMessageBody: action.body
-            }
-
-        }
         case sendmessage: {
-            let body = state.newMessageBody;
+            let body = action.newMessageBody;
             return {
                 ...state,
                 messages: [...state.messages, {id: 6, message: body}],
                 dialogs: [...state.dialogs, {id: 6, name: 'who-to'}],
-                newMessageBody: ""
             }
-
         }
         default:
             return state;
-
     }
 }
 export default messageReduser;

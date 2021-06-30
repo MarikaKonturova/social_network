@@ -1,20 +1,22 @@
-import {combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import profileReduser from "./profile-reducer";
 import messageReduser from "./message-reducer";
-import userReduser from "./user-reducer";
+import userReducer from "./user-reducer";
+import authReducer from "./auth-reducer";
+import thunkMiddleware  from 'redux-thunk'
+import {composeWithDevTools} from "redux-devtools-extension";
+
 let rootReducer = combineReducers(
     {
 
         profilePage: profileReduser,
         messagesPage: messageReduser,
-        usersPage: userReduser
-
+        usersPage: userReducer,
+        auth: authReducer
     }
 );
 export type AppStateType = ReturnType<typeof rootReducer>
-let store = createStore(rootReducer);
+let store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunkMiddleware)));
 
-// @ts-ignore
-window.store =store;
 
 export default store;
