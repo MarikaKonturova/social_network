@@ -9,14 +9,17 @@ type HeaderType = {
         id: number | null
         email: string | null
         login: string | null
-    }
+    },
+    logout:()=>void
 }
 const Header = (props: HeaderType) => {
+
     return (
         <header className={classes.header}>
             <img src='https://cdn.logo.com/hotlink-ok/logo-social.png'/>
             <div className={classes.login_block}>
-                {props.isAuth ? props.data.login
+                {props.isAuth ?
+                 <div>   {props.data.login} - <button onClick={props.logout}>Log out</button></div>
                     : <NavLink to={'/login'}>Login</NavLink>
                 } </div>
         </header>)

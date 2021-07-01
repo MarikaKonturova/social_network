@@ -5,6 +5,7 @@ import userReducer from "./user-reducer";
 import authReducer from "./auth-reducer";
 import thunkMiddleware  from 'redux-thunk'
 import {composeWithDevTools} from "redux-devtools-extension";
+import {appReducer} from "./app-reducer";
 
 let rootReducer = combineReducers(
     {
@@ -12,7 +13,8 @@ let rootReducer = combineReducers(
         profilePage: profileReduser,
         messagesPage: messageReduser,
         usersPage: userReducer,
-        auth: authReducer
+        auth: authReducer,
+        app: appReducer
     }
 );
 export type AppStateType = ReturnType<typeof rootReducer>

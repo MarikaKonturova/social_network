@@ -2,14 +2,11 @@ import React from 'react';
 import {connect} from "react-redux";
 import {AppStateType} from "../redux/redux-store";
 import {
-    acceptFollow, getUsers,
-    setCurrentPage,
-    acceptUnfollow,
+    getUsers,
     UserType, followTC, unfollowTC
 } from "../redux/user-reducer";
 import {Users} from "./Users";
 import {Preloader} from "../Common/Preloader/Preloader";
-import {withAuthRedirect} from "../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 type MapStatePropsType = {
@@ -68,6 +65,5 @@ export default compose<React.ComponentType>(
         {
             follow: followTC,
             unfollow: unfollowTC, getUsers
-        }),
-    withAuthRedirect)(UsersContainer)
+        }))(UsersContainer)
 

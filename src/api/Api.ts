@@ -38,8 +38,7 @@ export const authAPI = {
         return instance.get(`/auth/me`)
     },
     login(data: LoginDataRequestType){
-        debugger
-        return instance.post(`/auth/login`, {data})
+        return instance.post(`/auth/login`, data)
     },
     logout(){
         return instance.delete(`/auth/login`)
