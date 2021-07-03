@@ -11,7 +11,8 @@ type MapDispatchPropsType = {
 type OwnPropsType =  MapDispatchPropsType
 
 const Login = (props: OwnPropsType) => {
-    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.data.isAuth
+    )
 
     if(isAuth){
         return <Redirect to={'/profile'}/>

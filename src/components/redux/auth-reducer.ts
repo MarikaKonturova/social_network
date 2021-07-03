@@ -2,9 +2,6 @@ import {authAPI, LoginDataRequestType} from "../../api/Api";
 import {Dispatch} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {stopSubmit} from 'redux-form'
-import {LoginForm} from "../Login/LoginForm";
-import {initializeApp} from "./app-reducer";
 
 const SET_USER_DATA = 'SET-USER-DATA'
 const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
@@ -32,8 +29,8 @@ export type AuthReducerType = {
         id: null | number
         email: null | string
         login: null | string
+        isAuth: boolean
     }
-    isAuth: boolean
     appInitialized: boolean
     loginError: null | string
 }
@@ -42,9 +39,9 @@ let initialState: AuthReducerType = {
     data: {
         id: null,
         email: null,
-        login: null
+        login: null,
+        isAuth: false
     },
-    isAuth: false,
     appInitialized: false,
     loginError: null
 }
@@ -54,11 +51,13 @@ const authReducer = (state: AuthReducerType = initialState, action: ActionsType)
     switch (action.type) {
         case SET_USER_DATA: {
 
-            return {
+            let a = {
                 ...state,
-                ...action.data,
+               data: action.data,
                 loginError: null
             }
+            debugger
+            return a
         }
         case SET_LOGIN_ERROR: {
             return {
@@ -89,8 +88,9 @@ export const setLoginError = (loginError: string): setLoginErrorAT => {
 export const getAuthUserData = () => (dispatch: Dispatch) => {
   return  authAPI.me().then(response => {
         if (response.data.resultCode === 0) {
-            let {userId, login, email} = response.data.data;
-            dispatch(setUserData(userId, login, email, true));
+            debugger
+            let {id, login, email} = response.data.data;
+            dispatch(setUserData(id, login, email, true));
         }
     }).finally(() => {
   })

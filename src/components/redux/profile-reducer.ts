@@ -123,16 +123,18 @@ const profileReduser = (state: InitialState = initialState, action: ProfileActio
 
 
 }
-export const getUserProfile = (userId: string) => {
+export const getUserProfile = (userId: number) => {
+    debugger
     return (dispatch: Dispatch) => {
-        usersAPI.getUserProfile(+userId).then(response => {
+        usersAPI.getUserProfile(userId).then(response => {
             dispatch(setUserProfile(response.data))
         })
     }
 }
-export const getUserStatus = (userId: string) => {
+export const getUserStatus = (userId: number) => {
+    debugger
     return (dispatch: Dispatch) => {
-        profileAPI.getUserStatus(+userId).then(response => {
+        profileAPI.getUserStatus(userId).then(response => {
             dispatch(setUserStatus(response.data))
         })
     }
