@@ -17,9 +17,6 @@ export const LoginForm = ({login}: LoginFormType) => {
     const error = useSelector<AppStateType, null | string>(state => state.auth.loginError)
     const onSubmit = (formData: LoginDataRequestType) => {
         login(formData)
-       /* if (error) {
-            return {[FORM_ERROR]: 'email or password is wrong'}
-        }*/
     }
     return (
         <Form onSubmit={onSubmit}

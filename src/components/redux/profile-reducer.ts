@@ -14,7 +14,7 @@ type setUserStatusAT = {
     status: string
 }
 type ProfileActionTypes = setUserProfileAT | addPostActionType | setUserStatusAT
-type InitialState = typeof initialState;
+export type InitialState = typeof initialState;
 
 export type PostType = { likes: number, message: string, id: string }
 
@@ -40,23 +40,25 @@ export const setUserStatus = (status: string): setUserStatusAT => {
         status
     }
 }
-export type ProfileType={
+export type ProfileType = {
     userId: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
     contacts: {
-        github : string
+        github: string
         vk: string
         facebook: string
         instagram: string
         twitter: string
         website: string
         youtube: string
-        mainLink: string    },
+        mainLink: string
+    },
     photos: {
         small: string
-        large: string    }
+        large: string
+    }
 }
 let initialState = {
     postsData: [
@@ -73,7 +75,7 @@ let initialState = {
         lookingForAJobDescription: '',
         fullName: '',
         contacts: {
-            github : '',
+            github: '',
             vk: '',
             facebook: '',
             instagram: '',
@@ -87,7 +89,7 @@ let initialState = {
             large: ''
         }
     },
-    status:''
+    status: ''
 
 }
 
@@ -114,7 +116,7 @@ const profileReduser = (state: InitialState = initialState, action: ProfileActio
         case SET_USER_STATUS: {
             return {
                 ...state,
-               status: action.status
+                status: action.status
             }
         }
         default:
@@ -123,28 +125,21 @@ const profileReduser = (state: InitialState = initialState, action: ProfileActio
 
 
 }
-export const getUserProfile = (userId: number) => {
-    debugger
-    return (dispatch: Dispatch) => {
-        usersAPI.getUserProfile(userId).then(response => {
-            dispatch(setUserProfile(response.data))
-        })
-    }
+export const getUserProfile = (userId: number) => async (dispatch: Dispatch) => {
+    const response = await usersAPI.getUserProfile(userId)
+    dispatch(setUserProfile(response.data))
+
 }
-export const getUserStatus = (userId: number) => {
-    debugger
-    return (dispatch: Dispatch) => {
-        profileAPI.getUserStatus(userId).then(response => {
-            dispatch(setUserStatus(response.data))
-        })
-    }
+export const getUserStatus = (userId: number) => async (dispatch: Dispatch) => {
+    const response = await profileAPI.getUserStatus(userId)
+    dispatch(setUserStatus(response.data))
+
 }
-export const updateUserStatus = (status: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.updateStatus(status).then(response => {
-            if(response.data.resultCode === 0){
-            dispatch(setUserStatus(status))}
-        })
+export const updateUserStatus = (status: string) => async (dispatch: Dispatch) => {
+    const response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setUserStatus(status))
     }
+
 }
 export default profileReduser;

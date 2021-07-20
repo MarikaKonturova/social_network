@@ -1,5 +1,5 @@
 import profileReduser from "./profile-reducer";
-import messageReduser from "./message-reducer";
+import dialogsReduser from "./dialogs-reducer";
 
 /*export type PrototypeMessage = {
     id: number

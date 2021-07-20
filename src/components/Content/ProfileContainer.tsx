@@ -27,7 +27,6 @@ type OwnPropsType = MapStatePropsType & MapDispatchPropsType
 
 class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
-        debugger
         let userId = +(this.props.match.params.userId);
         if (!userId) {
            // const userId='1455'

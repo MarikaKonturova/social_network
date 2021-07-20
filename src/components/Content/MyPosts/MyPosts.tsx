@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostType } from '../../redux/profile-reducer';
+import {PostType} from '../../redux/profile-reducer';
 import classes from './MyPosts.module.css';
 import Post from "./Post/Post";
 import {Field, Form} from "react-final-form";
@@ -7,12 +7,10 @@ import {composeValidators, maxLengthCreator, requiredField} from "../../../utils
 import {Textarea} from "../../Common/FormsControls/FormControls";
 
 
-
-
-const MyPosts = (props: MyPostsPropsType) => {
+const MyPosts = React.memo((props: MyPostsPropsType)=> {
 
     let addPost = ({newPostText, ...restProps}: AddNewPostType) => {
-            props.addPost(newPostText);
+        props.addPost(newPostText);
     }
 
     let postsElements = props.postsData.map(el => <Post message={el.message} likes={el.likes}/>);
@@ -27,7 +25,7 @@ const MyPosts = (props: MyPostsPropsType) => {
             </div>
         </div>
     )
-}
+})
 
 
 const maxLength10 =  maxLengthCreator(10)

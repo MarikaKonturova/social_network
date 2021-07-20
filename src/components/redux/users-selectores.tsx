@@ -8,5 +8,5 @@ export const getUsersSuperSelector = createSelector(getUsers,getIsFetching, (use
 
 export const gePageSize = (state: AppStateType) => state.usersPage.pageSize
 export const getTotalUsersCount = (state: AppStateType) => state.usersPage.totalUsersCount
-export const getCurrentPage = (state: AppStateType) => state.usersPage.pageSize
+export const getCurrentPage = (state: AppStateType) => state.usersPage.currentPage
 export const getFollowingInProgress = (state: AppStateType) => state.usersPage.followingInProgress

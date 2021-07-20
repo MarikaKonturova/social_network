@@ -8,7 +8,7 @@ type ProfileStateType = {
     editMode: boolean,
     status: string
 }
-
+// should be deleted, ProfileStatusWithHooks exists
 export class ProfileStatus extends React.Component<ProfileStatusType> {
     state : ProfileStateType = {
         editMode: false,

@@ -1,8 +1,7 @@
 import React from 'react';
-import userPhoto from "../../asets/images/ava.png";
 import {UserType} from "../redux/user-reducer";
-import {NavLink} from 'react-router-dom';
-import {usersAPI} from "../../api/Api";
+import {Paginator} from "../Common/Paginator/Paginator";
+import {User} from "./User";
 
 type UsersFunc = {
     users: Array<UserType>
@@ -16,42 +15,19 @@ type UsersFunc = {
 }
 
 export const Users = (props: UsersFunc) => {
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
-    let pages = []
-    for (let i = 0; i <= pagesCount; i++) {
-        pages.push(i);
-    }
-
     return <div>
+        <Paginator currentPage={props.currentPage}
+                   onPageChanged={props.onPageChanged}
+                   pageSize={props.pageSize}
+                   totalUsersCount={props.totalUsersCount}
+                   portionSize={10}/>
         <div>
-            {pages.map(p => <span
-                onClick={(e) => {
-                    props.onPageChanged(p)
-                }}
-                className={props.currentPage === p ? 'selectedPage' : ''}>{p}</span>)}
+            {
+                props.users.map(u => <User user={u} followingInProgress={props.followingInProgress}
+                                           follow={props.follow} unfollow={props.unfollow}
+                />)
+            }
         </div>
-        {
-            props.users.map(u => <div key={u.id}>
-                <span><div>
-                <NavLink to={"/profile/" + u.id}>
-                    <img src={u.photos.small ? u.photos.small : userPhoto} style={{maxWidth: '100px'}} className={"userPhoto"}/></NavLink>
-                <div>
-                    {u.followed ?
-                        <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                            props.unfollow(u.id)
-                        }}>Unfollow</button>
-                        :
-                        <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                            props.follow(u.id)
-
-                        }}>Follow</button>}
-                    </div>
-            </div></span>
-                <span>
-                <div>{u.name}</div><div>{u.status}</div>
-            </span>
-            </div>)
-        }
     </div>
 
 

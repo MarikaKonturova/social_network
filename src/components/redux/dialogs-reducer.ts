@@ -28,7 +28,7 @@ let initialState = {
         {id: 5, message: 'Yo'}]
 }
 
-export const messageReduser = (state: InitialStateType = initialState, action: MessageActionTypes): InitialStateType => {
+export const dialogsReduser = (state: InitialStateType = initialState, action: MessageActionTypes): InitialStateType => {
     switch (action.type) {
         case sendmessage: {
             let body = action.newMessageBody;
@@ -42,4 +42,4 @@ export const messageReduser = (state: InitialStateType = initialState, action: M
             return state;
     }
 }
-export default messageReduser;
+export default dialogsReduser;
