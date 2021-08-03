@@ -1,5 +1,6 @@
 {
   "name": "kabzda_npm",
+  "homepage": "https://marikamobile.github.io/social_kabzda",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,7 +15,9 @@
     "@types/react-test-renderer": "^17.0.1",
     "@types/redux-form": "^8.3.1",
     "axios": "^0.21.1",
+    "classnames": "^2.3.1",
     "final-form": "^4.20.2",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-final-form": "^6.5.3",
@@ -35,7 +38,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

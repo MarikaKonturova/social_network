@@ -3,7 +3,6 @@ import {Input} from "../Common/FormsControls/FormControls";
 import {requiredField} from "../../utils/validators/Validator";
 import React from "react";
 import {LoginDataRequestType} from "../../api/Api";
-import {FORM_ERROR} from "final-form";
 import {useSelector} from "react-redux";
 import {AppStateType} from "../redux/redux-store";
 import s from '../Common/FormsControls/FormControls.module.css'
@@ -11,9 +10,12 @@ import s from '../Common/FormsControls/FormControls.module.css'
 
 type LoginFormType = {
     login: (formData: LoginDataRequestType) => void
+    getCaptchaURL: (CaptchaURL: string | null) => void
 }
 
 export const LoginForm = ({login}: LoginFormType) => {
+    const captchaUrl = useSelector<AppStateType, string | null>(state => state.auth.captchaURL)
+
     const error = useSelector<AppStateType, null | string>(state => state.auth.loginError)
     const onSubmit = (formData: LoginDataRequestType) => {
         login(formData)
@@ -43,6 +45,15 @@ export const LoginForm = ({login}: LoginFormType) => {
                               remember me
                           </label>
                       </div>
+                      {captchaUrl && <img src={captchaUrl}/>}
+                      {captchaUrl &&
+                      <div>
+                          <Field
+                              name="captcha"
+                              component={Input}
+                              validate={requiredField}
+                          />
+                      </div>}
                       {error && <div className={s.error}>{error}</div>}
                       <button type="submit">Submit</button>
                   </form>

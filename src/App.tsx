@@ -18,8 +18,18 @@ const DialogsContainer = React.lazy(() => import( "./components/Dialogs/DialogsC
 const ProfileContainer = React.lazy(() => import( './components/Content/ProfileContainer'))
 
 class App extends React.Component<AppContainerProps> {
+    catchAllUnhandledError = (promiseRejectionEvent: PromiseRejectionEvent) => {
+        // draw beautiful alert with global error in app-reducer + timeout(delete error)
+        alert("Some error occurred : " + promiseRejectionEvent)
+    }
+
     componentDidMount() {
         this.props.initializeApp();
+        window.addEventListener("unhandledrejection", this.catchAllUnhandledError);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandledError)
     }
 
     render() {
@@ -39,6 +49,8 @@ class App extends React.Component<AppContainerProps> {
                            render={() => <UsersContainer/>}/>
                     <Route path="/login"
                            render={() => <Login/>}/>
+                    <Route path="*"
+                           render={() => <div>404 NOT FOUND</div>}/>
 
                 </div>
             </div>

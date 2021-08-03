@@ -1,4 +1,5 @@
 import axios from "axios";
+import {ProfileType} from "../components/redux/profile-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -32,19 +33,38 @@ export const profileAPI = {
     updateStatus(status: string) {
         return instance.put(`/profile/status`, {status})
     },
+    savePhoto(image: string | Blob) {
+        const formData = new FormData();
+        formData.append('image', image)
+        return instance.put(`/profile/photo`, formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+    },
+    saveProfile(formData: ProfileType) {
+        return instance.put(`/profile`, formData)
+    }
+
 }
 export const authAPI = {
     me() {
         return instance.get(`/auth/me`)
     },
-    login(data: LoginDataRequestType){
+    login(data: LoginDataRequestType) {
         return instance.post(`/auth/login`, data)
     },
-    logout(){
+    logout() {
         return instance.delete(`/auth/login`)
     }
 }
-export type LoginDataRequestType={
+export const securityAPI = {
+    getCaptchaURL() {
+        return instance.get(`/security/get-captcha-url`)
+    }
+}
+export type LoginDataRequestType = {
     email: string
     password: string
     rememberMe?: boolean
